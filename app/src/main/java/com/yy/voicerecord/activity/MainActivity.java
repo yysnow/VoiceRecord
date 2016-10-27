@@ -1,4 +1,4 @@
-package com.yy.voicerecord;
+package com.yy.voicerecord.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,8 +9,53 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.iflytek.cloud.RecognizerListener;
+import com.iflytek.cloud.RecognizerResult;
+import com.iflytek.cloud.SpeechError;
+import com.yy.voicerecord.R;
+import com.yy.voicerecord.manager.IflySpeechManager;
+
 public class MainActivity extends AppCompatActivity {
 
+    private RecognizerListener recognizerListener = new RecognizerListener() {
+        @Override
+        public void onVolumeChanged(int i, byte[] bytes) {
+
+        }
+
+        @Override
+        public void onBeginOfSpeech() {
+
+        }
+
+        @Override
+        public void onEndOfSpeech() {
+
+        }
+
+        @Override
+        public void onResult(RecognizerResult recognizerResult, boolean b) {
+            if(b){
+                Snackbar.make(fab, voiceResult, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            } else{
+                voiceResult += recognizerResult.getResultString();
+            }
+
+        }
+
+        @Override
+        public void onError(SpeechError speechError) {
+
+        }
+
+        @Override
+        public void onEvent(int i, int i1, int i2, Bundle bundle) {
+
+        }
+    };
+    private FloatingActionButton fab;
+    private String voiceResult = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,12 +63,13 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                IflySpeechManager.getInstance(MainActivity.this).startSpeech(recognizerListener);
             }
         });
     }
