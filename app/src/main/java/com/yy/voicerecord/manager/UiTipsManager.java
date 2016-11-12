@@ -7,7 +7,8 @@ import android.os.Looper;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
-import com.tcl.onetouch.onetv.R;
+import com.yy.voicerecord.R;
+
 
 /**
  * Created by yy on 2016/11/4.
